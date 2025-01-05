@@ -16,12 +16,17 @@ include 'config/db.php';
 // Ambil data footer dan slogan dari database
 $footerQuery = "SELECT * FROM users LIMIT 1";
 $sloganQuery = "SELECT * FROM footer_header LIMIT 1";
+$proposalQuery = "SELECT * FROM proposal";
 
 $footerResult = $conn->query($footerQuery);
 $footerSloganResult = $conn->query($sloganQuery);
+$proposalResult = $conn->query($proposalQuery);
 
 $footerData = $footerResult->num_rows > 0 ? $footerResult->fetch_assoc() : ['nama_lengkap' => 'N/A'];
 $footerSlogan = $footerSloganResult->num_rows > 0 ? $footerSloganResult->fetch_assoc() : ['website_name' => 'N/A', 'slogan' => 'N/A', 'alamat' => 'N/A'];
+$proposal = $proposalResult->num_rows > 0 ? $proposalResult->fetch_assoc() : ['title' => '', 'status' => '', 'created_at' => ''];
+$proposal1 = $proposalResult->num_rows > 1 ? $proposalResult->fetch_assoc() : ['title' => '', 'status' => '', 'created_at' => ''];
+$proposal2 = $proposalResult->num_rows > 2 ? $proposalResult->fetch_assoc() : ['title' => '', 'status' => '', 'created_at' => ''];
 
 $conn->close();
 ?>
@@ -29,8 +34,6 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
         * {
@@ -47,69 +50,70 @@ $conn->close();
             background-color: #f4f4f4; /* Background lebih cerah */
         }
 
+        h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
+
+                
         /* Style header */
-/* Style header */
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Konten di kiri dan tombol Logout di kanan */
-    background-color: #34495e; /* Warna navbar */
-    color: #ecf0f1; /* Warna teks lebih terang agar terlihat */
-    padding: 15px 20px;
-    border-bottom: 1px solid #2c3e50; /* Garis bawah lebih gelap untuk pemisah */
-}
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Konten di kiri dan tombol Logout di kanan */
+            background-color: #2c3e50; /* Warna navbar */
+            color: #ecf0f1; /* Warna teks lebih terang agar terlihat */
+            padding: 15px 20px;
+        }
 
-/* Bagian logo */
-.header-logo img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-}
+        /* Bagian logo */
+        .header-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
 
-/* Bagian teks (Nama Web, Slogan, Alamat) */
-.header-text h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #ecf0f1; /* Warna teks putih */
-}
+        /* Bagian teks (Nama Web, Slogan, Alamat) */
+        .header-text h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #ecf0f1; /* Warna teks putih */
+        }
 
-.header-text .slogan {
-    margin: 0;
-    font-size: 14px;
-    color: #bdc3c7; /* Warna abu-abu terang */
-}
+        .header-text .slogan {
+            margin: 0;
+            font-size: 14px;
+            color: #bdc3c7; /* Warna abu-abu terang */
+        }
 
-.header-text .alamat {
-    margin: 0;
-    font-size: 12px;
-    color: #95a5a6; /* Warna lebih redup untuk detail alamat */
-}
+        .header-text .alamat {
+            margin: 0;
+            font-size: 12px;
+            color: #95a5a6; /* Warna lebih redup untuk detail alamat */
+        }
 
-/* Tombol Logout */
-.btn-logout {
-    background-color: #ecf0f1; /* Latar belakang putih terang */
-    color: #34495e; /* Warna teks mengikuti warna navbar */
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
+        /* Tombol Logout */
+        .btn-logout {
+            background-color: #ecf0f1; /* Latar belakang putih terang */
+            color: #34495e; /* Warna teks mengikuti warna navbar */
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
 
-.btn-logout:hover {
-    background-color: #bdc3c7; /* Warna hover */
-    color: #fff; /* Warna teks putih saat hover */
-}
+        .btn-logout:hover {
+            background-color: #bdc3c7; /* Warna hover */
+            color: #fff; /* Warna teks putih saat hover */
+        }
 
-/* Bagian header-content */
-.header-content {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Jarak antara logo dan teks */
-}
-
-
-
+        /* Bagian header-content */
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Jarak antara logo dan teks */
+        }
 
         .container {
             display: flex;
@@ -264,6 +268,7 @@ header {
     </style>
 </head>
 <body>
+
 <header>
     <div class="header-content">
         <!-- Bagian logo -->
@@ -278,7 +283,6 @@ header {
             <p class="alamat"><?php echo htmlspecialchars($footerSlogan['alamat']); ?></p>
         </div>
     </div>
-
     <!-- Tombol Logout -->
     <a href="logout.php" class="btn-logout">Logout</a>
 </header>
@@ -287,6 +291,7 @@ header {
 
 
     <div class="container">
+        <!--Side Nav-->
         <nav>
             <ul>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -305,54 +310,32 @@ header {
                 <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
             </div>
 
-            <!-- Statistik Proposal -->
-            <div class="card">
-                <h2>Statistik Proposal</h2>
-                <div class="stat-box">
-                    <div class="stat-item">
-                        <h3>Proposal Diterima</h3>
-                        <p>5</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Proposal Ditolak</h3>
-                        <p>2</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Proposal Sedang Diproses</h3>
-                        <p>3</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Tugas Terbaru -->
             <div class="card">
-                <h2>Tugas Terbaru</h2>
+                <h2>Status Proposal</h2>
                 <ul>
-                    <li>Review proposal #1023 - <span class="status">Pending</span></li>
-                    <li>Approve proposal #1025 - <span class="status">Pending</span></li>
-                    <li>Update proposal #1021 - <span class="status">Completed</span></li>
+                    <li><p><strong>Judul Proposal:</strong> <?php echo htmlspecialchars($proposal['title']); ?> - <strong><?php echo htmlspecialchars($proposal['status']); ?></strong></p></li>
+                    <li><p><strong>Judul Proposal:</strong> <?php echo htmlspecialchars($proposal1['title']); ?> - <strong><?php echo htmlspecialchars($proposal1['status']); ?></strong></p></li>
+                    <li><p><strong>Judul Proposal:</strong> <?php echo htmlspecialchars($proposal2['title']); ?> - <strong><?php echo htmlspecialchars($proposal2['status']); ?></strong></p></li>
                 </ul>
             </div>
 
             <!-- Recent Activity -->
             <div class="card">
-                <h2>Recent Activity</h2>
+                <h2>Proposal Dibuat</h2>
                 <ul>
-                    <li>Proposal #1021 updated on 01 Jan 2025</li>
-                    <li>Proposal #1023 submitted on 30 Dec 2024</li>
-                    <li>Proposal #1020 approved on 29 Dec 2024</li>
+                    <li><p><strong><?php echo htmlspecialchars($proposal['title']); ?></strong> - Created At - <strong><?php echo htmlspecialchars($proposal['created_at']); ?></strong></p></li>
+                    <li><p><strong><?php echo htmlspecialchars($proposal1['title']); ?></strong> - Created At - <strong><?php echo htmlspecialchars($proposal1['created_at']); ?></strong></p></li>
+                    <li><p><strong><?php echo htmlspecialchars($proposal2['title']); ?></strong> - Created At - <strong><?php echo htmlspecialchars($proposal2['created_at']); ?></strong></p></li>
                 </ul>
             </div>
 
-            <!-- Notifikasi -->
-            <div class="card">
-                <h2>Notifikasi</h2>
-                <p>Anda memiliki <strong>2</strong> proposal baru yang perlu ditinjau.</p>
-            </div>
         </section>
 
         <aside>
-            <h1>Welcome, <?php echo htmlspecialchars($user['nama_lengkap']); ?> (<?php echo htmlspecialchars($user['role']); ?>)</h1>
+            <div class="card">
+                <h1>Welcome, <?php echo htmlspecialchars($user['nama_lengkap']); ?> (<?php echo htmlspecialchars($user['role']); ?>)</h1>
+            </div>
         </aside>
     </div>
 

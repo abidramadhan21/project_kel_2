@@ -41,7 +41,7 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/proposal.css?v=1.0">
+    <link rel="stylesheet" href="style/proposal.css">
     <title>Proposal</title>
     <script>
         // Fungsi untuk menampilkan pop-up jika ada flash message
@@ -78,7 +78,7 @@ $result = mysqli_query($conn, $query);
             <td>
             <?php if ($proposal['file_path']): ?>
     <!-- Button untuk melihat file -->
-             <a href="crud/uploads/<?= htmlspecialchars($proposal['file_path']); ?>" target="_blank">
+             <a href="crud/<?= htmlspecialchars($proposal['file_path']); ?>" target="_blank">
             <button style="background-color: #4CAF50; color: white; padding: 5px 5px; border: none; border-radius: 5px; cursor: pointer;">
             View File
              </button></a>
@@ -95,50 +95,44 @@ $result = mysqli_query($conn, $query);
                 <?= htmlspecialchars($proposal['status']); ?>
             </td>
             <td>
+                <!-- Tombol validasi untuk Kaprodi -->
                 <?php if ($user['kode_role'] == 'PRD' && $proposal['kaprodi'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk Kaprodi -->
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=PRD" 
-                       style="color: green; margin-right: 10px;">Setuju</a>
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=PRD" 
-                       style="color: red;">Tidak Setuju</a>
+                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=PRD" style="text-decoration: none; color: white;">
+                        <button class="btn-setuju">Setuju</button>
+                     </a>
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=PRD" style="text-decoration: none; color: white;">
+                        <button class="btn-tolak">Tidak Setuju</button>
+                    </a>
+                <!-- Tombol validasi untuk Koordinator HIMA (KRD) -->    
                 <?php elseif ($user['kode_role'] == 'KRD' && $proposal['kaprodi'] == 'Setuju' && $proposal['koordinator_hima'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk Koordinator HIMA (KRD) -->
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=KRD" 
-                       style="color: green; margin-right: 10px;">Setuju</a>
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=KRD" 
-                       style="color: red;">Tidak Setuju</a>
-                
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=KRD" style="text-decoration: none; color: white;">
+                        <button class="btn-setuju">Setuju</button>
+                    </a>
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=KRD" style="text-decoration: none; color: white;">
+                        <button class="btn-tolak">Tidak Setuju</button>
+                    </a>
+                <!-- Tombol validasi untuk Fakultas -->
                 <?php elseif ($user['kode_role'] == 'FKT' && $proposal['kaprodi'] == 'Setuju' && $proposal['koordinator_hima'] == 'Setuju' && $proposal['fakultas'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk Fakultas -->
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=FKT" 
-                       style="color: green; margin-right: 10px;">Setuju</a>
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=FKT" 
-                       style="color: red;">Tidak Setuju</a>
-
+                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=FKT" style="text-decoration: none; color: white;">
+                        <button class="btn-setuju">Setuju</button>
+                     </a>
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=FKT" style="text-decoration: none; color: white;">
+                        <button class="btn-tolak">Tidak Setuju</button>
+                    </a>
+                <!-- Tombol validasi untuk BKAL -->    
                 <?php elseif ($user['kode_role'] == 'BKL' && $proposal['kaprodi'] == 'Setuju' && $proposal['koordinator_hima'] == 'Setuju' && $proposal['fakultas'] == 'Setuju' && $proposal['bkal'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk BKAL -->
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=BKL" 
-                       style="color: green; margin-right: 10px;">Setuju</a>
-                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=BKL" 
-                       style="color: red;">Tidak Setuju</a>
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=BKL" style="text-decoration: none; color: white;">
+                        <button class="btn-setuju">Setuju</button>
+                    </a>
+                    <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=BKL" style="text-decoration: none; color: white;">
+                        <button class="btn-tolak">Tidak Setuju</button>
+                    </a>
                 <?php elseif ($user['kode_role'] != 'PRD' && $user['kode_role'] != 'KRD' && $user['kode_role'] != 'FKT' && $user['kode_role'] != 'BKL'): ?>
                     <!-- Tombol Edit dan Delete -->
-                    <?php if ($user['kode_role'] != 'PRD' && $user['kode_role'] != 'KRD' && $user['kode_role'] != 'FKT' && $user['kode_role'] != 'BKL'): ?>
-        <!-- Membungkus tombol dengan div untuk pengaturan kiri dan kanan -->
-        <div style="display: flex; justify-content: space-between;">
-            <!-- Tombol Edit di kiri -->
-            <a href="crud/edit_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" 
-               style="background-color: #2196F3; color: white; padding: 5px 10px; text-decoration: none;">
-                Edit
-            </a>
-            <!-- Tombol Delete di kanan -->
-            <a href="crud/delete_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" 
-               style="background-color: #f44336; color: white; padding: 5px 10px; text-decoration: none;" 
-               onclick="return confirm('Yakin ingin menghapus proposal ini?')">
-                Delete
-            </a>
-        </div>
-                <?php endif; ?>
+                    <div style="display: flex; justify-content: space-between;">
+                        <a href="crud/edit_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" class="btn-edit">Edit</a>
+                        <a href="crud/delete_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" class="btn-delete" onclick="return confirm('Yakin ingin menghapus proposal ini?')">Delete</a>
+                    </div>
                 <?php endif; ?>
             </td>
         </tr>

@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Menentukan folder tujuan untuk menyimpan file
-            $file_dest = '../uploads/' . $file_name;
+            $file_dest = 'uploads/' . $file_name;
 
             // Memindahkan file ke folder tujuan
             if (move_uploaded_file($file_tmp, $file_dest)) {
@@ -71,12 +71,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <title>Buat Proposal</title>
 </head>
+
+<style>
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    form {
+        background-color: #34495e;
+        color: #ecf0f1;
+        width: 50%;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+    }
+
+    button {
+        background-color: #2980b9;
+        color: #ecf0f1;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%; 
+        box-sizing: border-box; 
+        transition: background-color 0.3s ease, padding-left 0.3s ease;
+    }
+
+    button:hover {
+        background-color:rgb(34, 98, 141);
+    }
+
+
+    input[type="text"]:focus,
+    textarea:focus,
+    input[type="file"]:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    }    
+</style>
+
 <body>
     <h1>Buat Proposal Baru</h1>
     <form method="POST" enctype="multipart/form-data" action="crud/create_proposal.php">
-        <label>Title:</label><br>
+        <label>Judul Proposal:</label><br>
         <input type="text" name="title" required><br>
-        <label>Description:</label><br>
+        <label>Deskripsi:</label><br>
         <textarea name="description" required></textarea><br><br>
         <label>Upload File:</label><br>
         <input type="file" name="file" required><br><br>
