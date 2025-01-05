@@ -8,16 +8,34 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 include 'config/db.php';
 
-// Query untuk mengambil data proposal berdasarkan role pengguna
-if ($user['kode_role'] == 'PRD') { // Kaprodi
-    $query = "SELECT * FROM proposal WHERE kaprodi = 'Pending'";
-} else {
-    $query = "SELECT * FROM proposal"; // Semua data untuk role selain PRD
-}
+// Ambil data proposal dari database dengan kondisi status yang lebih kompleks
+$query = "
+    SELECT *, 
+        CASE 
+            -- Jika semua status sudah disetujui
+            WHEN kaprodi = 'Setuju' AND koordinator_hima = 'Setuju' AND fakultas = 'Setuju' AND bkal = 'Setuju' THEN 'Verified'
+            -- Jika ada salah satu status yang ditolak
+            WHEN kaprodi = 'Tidak Setuju' OR koordinator_hima = 'Tidak Setuju' OR fakultas = 'Tidak Setuju' OR bkal = 'Tidak Setuju' THEN 'Declined'
+            -- Jika ada status yang Pending, periksa apakah sudah diupdate
+            WHEN kaprodi = 'Pending' OR koordinator_hima = 'Pending' OR fakultas = 'Pending' OR bkal = 'Pending' THEN 
+                CASE 
+                    WHEN updated_at IS NOT NULL AND TIMESTAMPDIFF(MINUTE, updated_at, NOW()) < 5 THEN 'Updated'  -- Status berubah jadi 'Updated' setelah diedit dalam waktu 5 menit
+                    WHEN updated_at IS NOT NULL THEN 'Pending'  -- Jika sudah diedit, ubah semua status menjadi Pending
+                    ELSE 'Ongoing'  -- Jika tidak ada update terbaru
+                END
+            -- Jika proposal baru, status langsung Ongoing
+            WHEN created_at IS NOT NULL AND updated_at IS NULL THEN 'Ongoing'
+            ELSE 'Unknown'
+        END AS status 
+    FROM proposal
+";
+
 
 $result = mysqli_query($conn, $query);
 
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +67,7 @@ $result = mysqli_query($conn, $query);
             <th>Status Koordinator HIMA</th>
             <th>Status Fakultas</th>
             <th>Status BKAL</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         <?php while ($proposal = mysqli_fetch_assoc($result)): ?>
@@ -57,8 +76,12 @@ $result = mysqli_query($conn, $query);
             <td><?= htmlspecialchars($proposal['title']); ?></td>
             <td><?= htmlspecialchars($proposal['description']); ?></td>
             <td>
-                <?php if ($proposal['file_path']): ?>
-                    <a href="crud/uploads/<?= htmlspecialchars($proposal['file_path']); ?>" target="_blank">View File</a>
+            <?php if ($proposal['file_path']): ?>
+    <!-- Button untuk melihat file -->
+             <a href="crud/uploads/<?= htmlspecialchars($proposal['file_path']); ?>" target="_blank">
+            <button style="background-color: #4CAF50; color: white; padding: 5px 5px; border: none; border-radius: 5px; cursor: pointer;">
+            View File
+             </button></a>
                 <?php else: ?>
                     No file uploaded
                 <?php endif; ?>
@@ -67,6 +90,10 @@ $result = mysqli_query($conn, $query);
             <td><?= htmlspecialchars($proposal['koordinator_hima']) ?? 'Pending'; ?></td>
             <td><?= htmlspecialchars($proposal['fakultas']) ?? 'Pending'; ?></td>
             <td><?= htmlspecialchars($proposal['bkal']) ?? 'Pending'; ?></td>
+            <td>
+                <!-- Status keseluruhan proposal -->
+                <?= htmlspecialchars($proposal['status']); ?>
+            </td>
             <td>
                 <?php if ($user['kode_role'] == 'PRD' && $proposal['kaprodi'] == 'Pending'): ?>
                     <!-- Tombol validasi untuk Kaprodi -->
@@ -82,26 +109,36 @@ $result = mysqli_query($conn, $query);
                        style="color: red;">Tidak Setuju</a>
                 
                 <?php elseif ($user['kode_role'] == 'FKT' && $proposal['kaprodi'] == 'Setuju' && $proposal['koordinator_hima'] == 'Setuju' && $proposal['fakultas'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk Koordinator HIMA (KRD) -->
+                    <!-- Tombol validasi untuk Fakultas -->
                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=FKT" 
                        style="color: green; margin-right: 10px;">Setuju</a>
                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=FKT" 
                        style="color: red;">Tidak Setuju</a>
 
                 <?php elseif ($user['kode_role'] == 'BKL' && $proposal['kaprodi'] == 'Setuju' && $proposal['koordinator_hima'] == 'Setuju' && $proposal['fakultas'] == 'Setuju' && $proposal['bkal'] == 'Pending'): ?>
-                    <!-- Tombol validasi untuk Koordinator HIMA (KRD) -->
+                    <!-- Tombol validasi untuk BKAL -->
                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=approve&role=BKL" 
                        style="color: green; margin-right: 10px;">Setuju</a>
                     <a href="validate_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>&action=decline&role=BKL" 
                        style="color: red;">Tidak Setuju</a>
                 <?php elseif ($user['kode_role'] != 'PRD' && $user['kode_role'] != 'KRD' && $user['kode_role'] != 'FKT' && $user['kode_role'] != 'BKL'): ?>
-                    <!-- Tombol edit dan delete untuk role lain -->
-                    <button class="edit-btn" style="background-color: #2196F3; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;" onclick="loadEditForm(<?= htmlspecialchars($proposal['id']); ?>)">
-                        Edit
-                    </button>
-                    <button class="delete-btn" style="background-color: #f44336; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;">
-                        <a href="crud/delete_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" style="text-decoration: none; color: white;">Delete</a>
-                    </button>
+                    <!-- Tombol Edit dan Delete -->
+                    <?php if ($user['kode_role'] != 'PRD' && $user['kode_role'] != 'KRD' && $user['kode_role'] != 'FKT' && $user['kode_role'] != 'BKL'): ?>
+        <!-- Membungkus tombol dengan div untuk pengaturan kiri dan kanan -->
+        <div style="display: flex; justify-content: space-between;">
+            <!-- Tombol Edit di kiri -->
+            <a href="crud/edit_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" 
+               style="background-color: #2196F3; color: white; padding: 5px 10px; text-decoration: none;">
+                Edit
+            </a>
+            <!-- Tombol Delete di kanan -->
+            <a href="crud/delete_proposal.php?id=<?= htmlspecialchars($proposal['id']); ?>" 
+               style="background-color: #f44336; color: white; padding: 5px 10px; text-decoration: none;" 
+               onclick="return confirm('Yakin ingin menghapus proposal ini?')">
+                Delete
+            </a>
+        </div>
+                <?php endif; ?>
                 <?php endif; ?>
             </td>
         </tr>
