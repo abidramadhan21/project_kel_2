@@ -52,54 +52,41 @@ section {
     border: 5px solid #9dad7f;
 }
 
-/* Styling untuk <aside> */
 aside {
-    background-color: #f9f9f9; /* Warna latar belakang */
-    border: 1px solid #ccc; /* Border tipis */
-    border-radius: 8px; /* Sudut melengkung */
-    padding: 15px; /* Jarak dalam */
-    margin: 20px 0; /* Jarak atas dan bawah */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efek bayangan */
-    width: 250px; /* Lebar tetap */
-    float: right; /* Menyisipkan aside di kanan */
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    float: right;
 }
 
-/* Heading dalam aside */
 aside h3 {
     font-size: 18px;
     color: #213555;
     margin-bottom: 10px;
-    border-bottom: 2px solid #213555; /* Garis bawah */
+    border-bottom: 2px solid #213555;
     padding-bottom: 5px;
 }
 
-/* List dalam aside */
 aside ul {
-    list-style-type: square; /* Tipe bullet */
-    padding-left: 20px; /* Jarak bullet ke teks */
+    list-style-type: square;
+    padding-left: 20px;
     margin: 0;
 }
 
 aside li {
-    margin-bottom: 8px; /* Jarak antar item */
+    margin-bottom: 8px;
     font-size: 14px;
     color: #555;
 }
 
 aside li:hover {
-    color: #213555; /* Warna berubah saat hover */
-    text-decoration: underline; /* Garis bawah saat hover */
+    color: #213555;
+    text-decoration: underline;
 }
-
-/* Penyesuaian untuk layar lebih kecil */
-@media (max-width: 768px) {
-    aside {
-        float: none; /* Tidak di kanan */
-        width: 100%; /* Lebar penuh */
-        margin: 20px auto; /* Margin otomatis */
-    }
-}
-
 
 .container {
     display: flex;
@@ -150,8 +137,44 @@ footer {
     bottom: 0;
     width: 100%;
     color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 
+.social-media, .copyright, .web-info {
+    flex: 1;
+    text-align: center;
+    margin: 5px;
+}
+
+.social-media ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-media li {
+    padding: 5px 0;
+}
+
+.web-info h3 {
+    margin: 5px 0;
+    font-size: 18px;
+    color: #213555;
+}
+
+.web-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     nav {
         width: 100%;
@@ -170,6 +193,21 @@ footer {
         margin: 15px auto;
         width: 90%;
     }
+
+    aside {
+        float: none;
+        width: 100%;
+        margin: 20px auto;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-media, .copyright, .web-info {
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -180,70 +218,6 @@ footer {
     .btn-proposal, .btn-laporan, .btn-logout {
         width: 100%;
         padding: 10px;
-    }
-}
-
-footer {
-    background-color: #F5EFE7;
-    text-align: center;
-    font-size: 103px;
-    bottom: 0;
-    width: 100%;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f7f7e8;
-    border-top: 1px solid #ccc;
-    font-size: 14px;
-    flex-wrap: wrap;
-    position: fixed; /* Tetap di bawah layar */
-    bottom: 0;
-    left: 0; /* Menempel di kiri */
-    right: 0; /* Menempel di kanan */
-    width: 100%; /* Lebar penuh layar */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 100; /* Agar di atas elemen lain */
-}
-
-.social-media, .copyright, .web-info {
-    flex: 1;
-    text-align: center;
-    margin: 5px;
-}
-
-.social-media ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.social-media li {
-    padding: 5px 200px 5px 0;
-}
-
-.web-info h3 {
-    margin: 5px  0 5px 200px;
-    font-size: 18px;
-    color: #213555;
-}
-
-.web-info p {
-    margin: 5px 0 5px 200px;
-    font-size: 14px;
-    color: #555;
-}
-
-/* Penyesuaian untuk layar lebih kecil */
-@media (max-width: 768px) {
-    footer {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .social-media, .copyright, .web-info {
-        margin-bottom: 10px;
     }
 }
 

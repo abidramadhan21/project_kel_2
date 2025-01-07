@@ -1,111 +1,136 @@
+/* Container untuk membungkus tabel agar tabel berada di tengah */
+.table-container {
+    display: flex;
+    justify-content: center; /* Posisi tabel di tengah secara horizontal */
+    align-items: center; /* Posisi tabel di tengah secara vertikal */
+    min-height: 100vh; /* Memastikan tabel tetap di tengah meskipun halaman lebih panjang */
+    padding: 10px;
+}
 
-                /* Tambahkan aturan untuk container yang membungkus tabel */
-        .table-container {
-            display: flex;
-            justify-content: center; /* Membuat tabel berada di tengah secara horizontal */
-            align-items: center; /* Membuat tabel berada di tengah secara vertikal */
-            min-height: 100vh; /* Memastikan tabel tetap di tengah meskipun halaman lebih panjang */
-            padding: 10px;
-        }
+/* Styling untuk tabel */
+table {
+    width: 100%; /* Lebar tabel 100% */
+    max-width: 1200px; /* Lebar maksimum tabel */
+    margin-bottom: 20px;
+    border-collapse: collapse; /* Menghilangkan jarak antar border */
+    box-shadow: 0 2px 5px rgba(1, 1, 1, 0.1);
+}
 
-        table {
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk gaya */
-        }
+table th, table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ddd; /* Border antar sel */
+}
 
-        table th, table td {
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
+table th {
+    background-color: #34495e; /* Warna background header tabel */
+    color: white; /* Warna teks header tabel */
+    font-weight: bold;
+}
 
-        table th {
-            background-color: #34495e;
-            color: white;
-            font-weight: bold;
-        }
+table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Warna latar belakang baris genap */
+}
 
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+table tr:hover {
+    background-color: #f1f1f1; /* Warna latar saat hover */
+}
 
-        table tr:hover {
-            background-color: #f1f1f1;
-        }
+/* Styling tombol */
+.btn-view, .btn-setuju, .btn-tolak, .btn-edit, .btn-delete {
+    font-size: 14px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px; /* Sudut membulat */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
 
-        .btn-action:hover {
-            background-color: #38813b;
-        }
+.btn-view {
+    background-color: #4CAF50; /* Warna hijau */
+    color: white;
+}
 
-        .btn-view {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+.btn-view:hover {
+    background-color: #38813b;
+}
 
-        .btn-view:hover {
-            background-color: #38813b;
-        }
+.btn-setuju {
+    background-color: #28a745; /* Warna hijau persetujuan */
+    color: white;
+}
 
-        .btn-setuju, .btn-tolak {
-            font-size: 14px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px; /* Less rounded */
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin: 0 5px;
-        }
+.btn-setuju:hover {
+    background-color: #218838;
+}
 
-        .btn-setuju {
-            background-color: #28a745;
-            color: white;
-        }
+.btn-tolak {
+    background-color: #dc3545; /* Warna merah penolakan */
+    color: white;
+}
 
-        .btn-setuju:hover {
-            background-color: #218838;
-        }
+.btn-tolak:hover {
+    background-color: #c82333;
+}
 
-        .btn-tolak {
-            background-color: #dc3545;
-            color: white;
-        }
+.btn-edit {
+    background-color: #2196F3; /* Warna biru untuk edit */
+    color: white;
+}
 
-        .btn-tolak:hover {
-            background-color: #c82333;
-        }
+.btn-edit:hover {
+    background-color: #1a6aac;
+}
 
-        .btn-setuju:active, .btn-tolak:active {
-            transform: scale(0.98);
-        }
+.btn-delete {
+    background-color: #f44336; /* Warna merah untuk delete */
+    color: white;
+}
 
-        .btn-edit {
-            background-color: #2196F3;
-            color: white;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 3px;
-            transition: background-color 0.3s ease;
-        }
+.btn-delete:hover {
+    background-color: #b83229;
+}
 
-        .btn-edit:hover {
-            background-color: #1a6aac;
-        }
+/* Animasi klik */
+.btn-setuju:active, .btn-tolak:active, .btn-edit:active, .btn-delete:active {
+    transform: scale(0.98); /* Efek klik */
+}
 
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+/* Responsive styling */
+@media (max-width: 768px) {
+    .table-container {
+        padding: 5px;
+    }
 
-        .btn-delete:hover {
-            background-color: #b83229;
-        }
+    table {
+        font-size: 12px; /* Ukuran font lebih kecil */
+    }
+
+    table th, table td {
+        padding: 8px; /* Padding lebih kecil */
+    }
+
+    .btn-view, .btn-setuju, .btn-tolak, .btn-edit, .btn-delete {
+        font-size: 12px; /* Ukuran font tombol lebih kecil */
+        padding: 6px 12px; /* Padding tombol lebih kecil */
+    }
+}
+
+@media (max-width: 480px) {
+    .table-container {
+        flex-direction: column; /* Elemen disusun vertikal */
+    }
+
+    table {
+        width: 100%; /* Lebar tabel penuh */
+        overflow-x: auto; /* Scroll horizontal jika tabel terlalu besar */
+    }
+
+    .btn-view, .btn-setuju, .btn-tolak, .btn-edit, .btn-delete {
+        font-size: 10px; /* Ukuran font tombol lebih kecil lagi */
+        padding: 5px 10px; /* Padding tombol lebih kecil lagi */
+    }
+}

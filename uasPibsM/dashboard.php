@@ -36,235 +36,283 @@ $conn->close();
 <head>
     <title>Dashboard</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f4f4f4; /* Background lebih cerah */
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color:rgb(255, 255, 255);
+    }
 
-        h1 {
+    h1 {
         text-align: center;
         color: #2c3e50;
     }
 
-                
-        /* Style header */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Konten di kiri dan tombol Logout di kanan */
-            background-color: #2c3e50; /* Warna navbar */
-            color: #ecf0f1; /* Warna teks lebih terang agar terlihat */
-            padding: 15px 20px;
-        }
+    /* Header Styles */
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        padding: 15px 20px;
+    }
 
-        /* Bagian logo */
-        .header-logo img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-        }
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
 
-        /* Bagian teks (Nama Web, Slogan, Alamat) */
-        .header-text h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #ecf0f1; /* Warna teks putih */
-        }
+    .header-logo img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+    }
 
-        .header-text .slogan {
-            margin: 0;
-            font-size: 14px;
-            color: #bdc3c7; /* Warna abu-abu terang */
-        }
+    .header-text h3 {
+        font-size: 18px;
+        color: #ecf0f1;
+    }
 
-        .header-text .alamat {
-            margin: 0;
-            font-size: 12px;
-            color: #95a5a6; /* Warna lebih redup untuk detail alamat */
-        }
+    .header-text .slogan {
+        font-size: 14px;
+        color: #bdc3c7;
+    }
 
-        /* Tombol Logout */
-        .btn-logout {
-            background-color: #ecf0f1; /* Latar belakang putih terang */
-            color: #34495e; /* Warna teks mengikuti warna navbar */
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
+    .header-text .alamat {
+        font-size: 12px;
+        color: #95a5a6;
+    }
 
-        .btn-logout:hover {
-            background-color: #bdc3c7; /* Warna hover */
-            color: #fff; /* Warna teks putih saat hover */
-        }
+    .btn-logout {
+        background-color: #ecf0f1;
+        color: #34495e;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
 
-        /* Bagian header-content */
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 15px; /* Jarak antara logo dan teks */
-        }
+    .btn-logout:hover {
+        background-color: #bdc3c7;
+        color: #fff;
+    }
 
+    /* Main Layout Styles */
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    nav {
+        width: 100%;
+        background-color: #34495e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    nav:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    nav ul {
+        list-style: none;
+    }
+
+    nav ul li {
+        margin: 15px 0;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: #ecf0f1;
+        font-size: 16px;
+        display: block;
+        padding: 10px;
+        transition: background-color 0.3s ease, padding-left 0.3s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: #2980b9;
+        padding-left: 15px;
+    }
+
+    section {
+        flex: 1;
+        background-color:rgb(236, 236, 236);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    section:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);   
+    }
+
+    aside {
+        width: 100%;
+        background-color: #34495e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    aside:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Footer Styles */
+    footer {
+        background-color: #2c3e50;
+        padding: 10px;
+        color: #ecf0f1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        gap: 10px;
+    }
+
+    footer .social-media,
+    footer .copyright,
+    footer .web-info {
+  
+        text-align: center;
+    }
+
+    footer .copyright {
+        margin-top: 33px;
+        margin-right: 90px;
+    }
+
+    footer .web-info {
+        margin-top: 19px;
+    }
+
+    footer .social-media ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    footer .social-media ul li {
+        margin-bottom: 5px;
+    }
+
+    footer .social-media ul li a {
+        text-decoration: none;
+        color: #ecf0f1;
+        font-size: 14px;
+    }
+
+    /* Card and Stat Box Styles */
+    .card {
+        background-color:rgb(255, 255, 255);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.01);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .card p {
+        font-size: 14px;
+        color: #34495e;
+    }
+
+    .stat-box {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .stat-item {
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        flex: 1;
+    }
+
+    .stat-item h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #2c3e50;
+    }
+
+    .stat-item p {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2980b9;
+    }
+
+    .status {
+        color: #f39c12;
+        font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (min-width: 768px) {
         .container {
-            display: flex;
-            flex: 1;
-            box-sizing: border-box;
+            flex-wrap: nowrap;
         }
 
         nav {
             width: 20%;
-            background-color: #34495e; /* Warna nav lebih gelap */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        nav ul {
-            list-style: none;
-        }
-
-        nav ul li {
-            margin: 15px 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #ecf0f1;
-            font-size: 16px;
-            display: block;
-            padding: 10px;
-            transition: background-color 0.3s ease, padding-left 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: #2980b9; /* Warna hover biru */
-            padding-left: 15px;
         }
 
         section {
             width: 60%;
-            background-color: #fff;
-            padding: 20px;
         }
 
         aside {
             width: 20%;
-            background-color: #ecf0f1;
-            padding: 20px;
         }
+    }
 
-        footer {
-            background-color: #2c3e50;
-            padding: 20px;
-            color: #ecf0f1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        footer .social-media {
-            flex: 1;
-            text-align: left;
-        }
-
-        footer .social-media ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .social-media ul li {
-            margin-bottom: 5px;
-        }
-
-        footer .social-media ul li a {
-            text-decoration: none;
-            color: #ecf0f1;
-            font-size: 14px;
-        }
-
-        footer .copyright {
+    @media (max-width: 767px) {
+        .header-content {
+            flex-direction: column;
             text-align: center;
-            flex: 1;
         }
 
-        footer .web-info {
-            text-align: right;
-            flex: 1;
-        }
-
-        footer h3 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        footer p {
-            font-size: 14px;
-        }
-
-        .card {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h2 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .card p,
-        .card ul {
-            font-size: 14px;
-            color: #34495e;
+        nav ul li {
+            text-align: center;
         }
 
         .stat-box {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
+            flex-direction: column;
         }
-
-        .stat-item {
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-item h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
-
-        .stat-item p {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2980b9;
-        }
-
-        .status {
-            color: #f39c12;
-            font-weight: bold;
-        }
-
-        ul {
-            list-style: none;
-        }
+    }
     </style>
 </head>
 <body>
